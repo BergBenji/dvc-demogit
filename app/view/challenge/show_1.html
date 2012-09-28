@@ -1,0 +1,404 @@
+<tal:block metal:use-macro="dvc.html/default_tpl">
+    
+	<tal:block define="global pageid string:empty" />
+    
+    
+	<tal:block metal:fill-slot="dynamic_js">
+	    <script src="${baseUrl}public/js/challenge.js"></script>
+	</tal:block>
+	<tal:block class="" metal:fill-slot="content"
+		   tal:define="
+			chall challenge;
+			persons persons;
+			solution solution;
+			solutioncontainer solutionContainer"
+		   >
+<!--	<tal:block class="" metal:fill-slot="content"
+		   tal:define="
+			chall challenge/getChallenge;
+			persons challenge/getPersons;
+			solution challenge/getSolution;
+			solutioncontainer challenge/getSolutionContainer"
+		   >-->
+	    <!-- Header -->
+	    <header>
+	      <a href="${baseUrl}">
+		<h1>Dentsu</h1>
+		<h2>Value Creator</h2>
+		<a href="#" class="loadingoverlay" rel="#loading_overlay" style="display:none;">loading_overlay</a>
+	      </a>
+	      <nav>
+		<ul>
+		  <li id="info"><a href="#" rel="#info_overlay" data-challenge-id="${chall/id}">Info</a></li>
+		  <li id="battlefield"><a href="#" rel="#battlefield_overlay"  data-challenge-id="${chall/id}">Battlefield</a></li>
+		  <li id="notes"><a href="#" rel="#notes_overlay"  data-challenge-id="${chall/id}">Notes</a></li>
+		</ul>
+	      </nav>
+	    </header>
+
+	    <!-- Challenge -->
+	    <section id="challenge">
+	      <header><span>Challenge</span></header>
+	      <article>
+		<a class="more" href="#"></a>
+		<h2 tal:content="chall/title">Here the title</h2>
+		<img src="${baseUrl}public/img/placeholder_challenge.png" alt="/" tal:attributes="src chall/img | default" />
+		<p tal:content="chall/description">Lorem ipsum dolor sit amet sit nsectetur adipiscing elit. Nunc et tempus est, a interdum lacus dignissim quis. Nunc pellentesque tempus est, a interdum lacus dignissim quis.</p>
+		<a class="edit" href="#" rel="#challenge_overlay" data-challenge-id="${chall/id}"></a>
+	      </article>
+	    </section>
+
+	    <!-- Personas -->
+	    <section id="personas">
+	      <header><span>Personas</span></header>
+	      <article>
+		<a class="more" href="#"></a>
+		<ul>
+		  <li tal:repeat="item persons">
+		    <a href="#"><img src="${baseUrl}public/img/personas/${item/img | string:no}.jpg" alt="/" class="personimage_${item/id}" tal:attributes="title item/title"/> </a>
+		    <a class="edit" href="#" rel="#personas_overlay" data-persona-id="${item/id}"></a>
+		    <a class="more" href="#" rel="#personas_overlay" data-persona-id="${item/id}"></a>
+		  </li>
+		  <li><a class="add" href="#" rel="#personas_overlay" data-challenge-id="${chall/id}"></a></li>
+		</ul>
+	      </article>
+	    </section>
+
+	    <!-- Solution -->
+	    <section id="solution" >
+	      <header>
+		<span>Solution</span>
+	      </header>
+		
+	      <!-- NO SOLUTIONS EXISTS -->
+	      <article tal:condition="not: challenge/issetSolution">
+		<a class="more" href="#"></a>
+		<a class="add" href="#" rel="#solution_overlay"></a>
+	      </article>
+	      <!-- SOME or ONE SOLUTION EXISTS -->
+	      
+	      <article tal:condition="challenge/issetSolution">
+		<a class="more" href="#"></a>
+		<h2 tal:content="solution/title | string:NoTitle">Multi user-partnership via crowdselling</h2>
+		<select id="solution_changer_">
+		    <option value="">SELECT SOLUTION</option>
+		    <tal:block tal:repeat="item challenge/getAllSolutions"> 
+			<option 
+				tal:condition="exists: item/id" 
+				value="?pid=challenge&cid=${chall/id}&gsid=${item/id}" 
+				tal:attributes="selected item/ischecked" 
+				tal:content="item/title"></option>
+		    </tal:block>
+		    <option value="addnew" rel="#solution_overlay">Add New Solution</option>
+		</select>
+		<a class="add add_new_solution" href="#" rel="#solution_overlay" style="display:none;"></a>
+
+		<div>
+		  <p style="display:none">Rated ${solution/rating | string:0}</p>
+		  <form>
+		    <input type="radio" class="rating {split:2}" value="1" tal:attributes="checked php:solution.isRatingValue(1)"/>
+		    <input type="radio" class="rating {split:2}" value="2" tal:attributes="checked php:solution.isRatingValue(2)"/>
+		    <input type="radio" class="rating {split:2}" value="3" tal:attributes="checked php:solution.isRatingValue(3)"/>
+		    <input type="radio" class="rating {split:2}" value="4" tal:attributes="checked php:solution.isRatingValue(4)"/>
+		    <input type="radio" class="rating {split:2}" value="5" tal:attributes="checked php:solution.isRatingValue(5)"/>
+		    <input type="radio" class="rating {split:2}" value="6" tal:attributes="checked php:solution.isRatingValue(6)"/>
+		    <input type="radio" class="rating {split:2}" value="7" tal:attributes="checked php:solution.isRatingValue(7)"/>
+		    <input type="radio" class="rating {split:2}" value="8" tal:attributes="checked php:solution.isRatingValue(8)"/>
+		    <input type="radio" class="rating {split:2}" value="9" tal:attributes="checked php:solution.isRatingValue(9)"/>
+		    <input type="radio" class="rating {split:2}" value="10" tal:attributes="checked php:solution.isRatingValue(10)"/>
+		  </form>
+		</div>
+		
+		<p tal:content="solution/description | NULL">Lorem ipsum dolor sit amet sit nsectetur adipiscing elit. Nunc et tempus est, a interdum lacus dignissim quis. Nunc pellentesque tempus est, a interdum lacus dignissim quis.</p>
+		<a class="edit" href="#" rel="#solution_overlay" data-challenge-id="${solution/id}"></a>
+	      </article>
+	      
+	    </section>
+	    <!-- END Solution -->
+
+	    <!-- Archetype Categories -->
+	    <section id="archetype_categories" tal:condition="challenge/issetSolution" class="categoriecolums_${challenge/containerCount | string:0}">
+	      <article>
+		<ul>
+		  <li tal:repeat="container solutioncontainer" data-category-id="${container/id}" class="containerid_${container/id}">
+		    <header>
+		      <span tal:content="container/title">Title</span>
+		      <img src="${baseUrl}public/img/move_inv.png" alt="/"  />
+		      <ul class="trashbox" src="${baseUrl}public/img/trashicon.png" alt="/"  />
+		    </header>
+		    <article>
+		      <p tal:content="container/info">Short Info</p>
+		      <ul>
+			<li tal:repeat="item container/archetype" data-archetype-id="${item/id}" data-archetype-type="${item/typeid}" data-archetype-cat="${item/catid}" class="archetype">
+			    <tal:block condition="not:tpl/isMobile">  
+			        <img class="archetype_preview" src="${baseUrl}public/img/placeholder_archetype_small.png" alt="/" tal:attributes="src item/image | string:${baseUrl}public/img/placeholder_archetype_small.png"/>
+			        <ul class="archetype_overlay">
+				    <li><a class="archetype_info" href="?pid=archetype&archid=${item/id}" rel="#archetypedetail_overlay" data-archtype-id="${item/id}" data="#container_overlay"></a></li>
+				    <li class="draghandle"></li>
+				</ul>
+			    </tal:block>
+			    <tal:block condition="tpl/isMobile">  
+				    <img class="archetype_preview" src="${baseUrl}public/img/placeholder_archetype_small.png" alt="/" tal:attributes="src item/image | string:${baseUrl}public/img/placeholder_archetype_small.png"/>
+				    <ul class="archetype_overlay">
+					<li class="spacerfield"></li>
+					<li><a class="archetype_info" href="?pid=archetype&archid=${item/id}" rel="#archetypedetail_overlay" data-archtype-id="${item/id}" data="#container_overlay"></a></li>
+					<li class="draghandle"></li>
+				    </ul>
+			    </tal:block>
+			</li>
+		      </ul>
+		      <nav>
+			<ul>
+			  <li><a class="edit" href="#" rel="#category_overlay" data-container-id="${container/id}"></a></li>
+			  <li><a class="more" href="#"></a></li>
+			  <li><a class="info" href="?pid=archetype&container=${container/id}" rel="#container_overlay"></a></li>
+			  
+			</ul>
+		      </nav>
+		    </article>
+		  </li>
+		  <li class="dontmove">
+		    <a class="add" href="#" rel="#category_overlay" data-solution-id="${solution/id}"></a>
+		  </li>
+		</ul>
+	      </article>
+	    </section>
+	    <!-- END Archetype Categories -->
+
+	    <!-- Archetypes -->
+	    <section id="archetypes">
+	      <header>
+		<span>Archetypes</span>
+		<nav>
+		  <ul>
+		    <li class="more"><a href="#">Show All</a></li>
+		    <li class="add"><a href="#">Close/Add</a></li>
+		    <!--<li class="new"><a href="#" rel="#add_archetype_overlay">New</a></li>-->
+		    <li class="search">
+		      <form>
+			<label>Search</label>
+			<input type="text" class="deletable"/>
+			<input type="submit" value="Go &gt;" />
+		      </form>
+		    </li>
+		    <li class="categories">
+		      <a href="#" rel="#archetype_types">Categories</a>
+		    </li>
+		  </ul>
+		</nav>
+	      </header>
+	      <article>
+		<ul>
+		    <tal:block metal:define-macro="archetype">
+			<tal:block condition="tpl/isMobile">
+			    <li tal:repeat="item archetypes" data-archetype-id="${item/id}" data-archetype-typeid="${item/typeid}" data-archetype-catid="${item/catid}" class="archetype catclass_${item/catid} archetypeid_${item/id}">
+				<header tal:content="item/title">Title</header>
+				<img class="archetype_preview" src="${item/image}" alt="/" />
+				<ul class="archetype_overlay">
+				    <li class="spacerfield"></li>
+				    <li><a class="archetype_info" href="?pid=archetype&archid=${item/id}" rel="#archetypedetail_overlay" data-archtype-id="${item/id}" data="#container_overlay"></a></li>
+				    <li class="draghandle"></li>
+				</ul>
+			    </li>
+			</tal:block>
+			
+			<tal:block condition="not:tpl/isMobile">
+			   <li tal:repeat="item archetypes" data-archetype-id="${item/id}" data-archetype-typeid="${item/typeid}" data-archetype-catid="${item/catid}" class="archetype catclass_${item/catid} archetypeid_${item/id}">
+				<header tal:content="item/title">Title</header>
+				<img class="archetype_preview" src="${item/image}" alt="/" />
+				<ul class="archetype_overlay">
+				    <li><a class="archetype_info" href="?pid=archetype&archid=${item/id}" rel="#archetypedetail_overlay" data-archtype-id="${item/id}" data="#container_overlay"></a></li>
+				    <li class="draghandle"></li>
+				</ul>
+			  </li>
+			</tal:block>
+			
+			  
+		    </tal:block>
+		</ul>
+	      </article>
+	    </section>
+	    
+	    <section id="trashbin">
+		<ul class="mobiletrashbox">
+		    <li></li>
+		</ul>
+	    </section>
+	    
+	    <!-- END Archetypes -->
+	    
+	    <!-- Overlays -->
+	    
+	    <div class="overlay" id="info_overlay">
+	      <tal:block metal:define-macro="ChallengeInfoBox">
+	      <header>Challenge info</header>
+	      <form action="#" method="post">
+		<textarea class="challenge-info challenge_info_info" name="challengeinfo[info]" tal:content="chall/info | string: Challange Informations">Challenge info</textarea>
+		<input type="hidden" class="challenge_info_id" name="challengeinfo[id]" value="" tal:attributes="value chall/id | null" />
+		<input type="submit" value="save >" />
+	      </form></tal:block><tal:block metal:use-macro="ChallengeInfoBox" />
+	    </div>
+	    
+	    
+	    
+	    <div class="overlay" id="battlefield_overlay">
+		<tal:block metal:define-macro="ChallengeBattlefieldBox">
+	      <header>Edit battlefield</header>
+	      <form action="#" method="post">
+		<div class="overlay_filelist container" id="battlefield_filecontainer">
+		    <tal:block repeat="item chall/getChallengeBattlefieldFiles">
+			<div tal:condition="item/isImg">
+			    <a href="_temp/challenge_files/${item/filename}" target="_blank"><img src="_temp/challenge_files/${item/filename}" style="width:100%; height:100%" /></a>
+			</div>
+			<div tal:condition="item/isPdf">
+			    <a href="_temp/challenge_files/${item/filename}" target="_blank"><img src="${baseUrl}public/img/pdf-icon.png" style="width:100%; height:100%" /></a>
+			</div>
+		    </tal:block>
+		</div>
+		<a href="#" class="fileupload" id="battlefield_upload"><span>Image or File</span></a>
+		<textarea class="battlefield-info battlefield_battlefield" name="challengebattlefield[battlefield]" tal:content="chall/battlefield | string: Insert your battlefield">Battlefield Description</textarea>
+		<input type="hidden" name="challengebattlefield[id]" class="battlefield_id" value="" tal:attributes="value chall/id | null" />
+		<input type="submit" value="save >" />
+	      </form>
+	      </tal:block>
+	      <tal:block metal:use-macro="ChallengeBattlefieldBox" />
+	    </div>
+
+	    <div class="overlay" id="notes_overlay">
+		<tal:block metal:define-macro="ChallengeNotesBox">
+		  <header>Add notes</header>
+		  <form method="post" action="#">
+		    <div class="overlay_filelist container" id="notes_filecontainer">
+			<tal:block repeat="item chall/getChallengeNotesFiles">
+			    <div>
+				<a href="_temp/challenge_files/${item/filename}" target="_blank" tal:condition="item/isImg"><img src="_temp/challenge_files/${item/filename}" style="width:100%; height:100%" /></a>
+				<a href="_temp/challenge_files/${item/filename}" target="_blank" tal:condition="item/isPdf"><img src="${baseUrl}public/img/pdf-icon.png" style="width:100%; height:100%" /></a>
+			    </div>
+			</tal:block>
+		    </div>
+		    <a href="#" class="fileupload" id="notes_upload"><span>Image or File</span></a>
+		    <textarea class="challenge-notes notes_note" name="challengenotes[notes]" tal:content="chall/notes | string:Challenge Notes">Challenge Notes</textarea>
+		    <input type="hidden" class="notes_id" name="challengenotes[id]" value="" tal:attributes="value chall/id | null" />
+		    <input type="submit" value="save >" />
+		  </form></tal:block><tal:block metal:use-macro="ChallengeNotesBox" />
+	    </div>
+	    
+	    
+	    
+	    <div class="overlay" id="challenge_overlay"><tal:block metal:define-macro="challengeOverlay">
+	      <header>Edit challenge</header>
+	      <form method="post" action="#">
+		<a tal:condition="chall/img"  href="#" class="fileupload" id="challenge_upload"><img src="${chall/img | string:ooo}" style="width:100%; height:100%;"/></a>
+		<a tal:condition="not:chall/img"  href="#" class="fileupload" id="challenge_upload"><span>Image or File</span></a>
+		<div class="overlay_filelist container" id="challenge_filecontainer"></div>
+		<ul class="type">
+		  <li><textarea name="challenge[title]" tal:content="chall/title | default">Title</textarea></li>
+		  <li><textarea name="challenge[description]" tal:content="chall/description | default">Description</textarea></li>
+		</ul>
+		<input type="hidden" name="challenge[id]" value="" tal:attributes="value chall/id | null" />
+		<input type="submit" value="save >" />
+	      </form></tal:block><tal:block metal:use-macro="challengeOverlay" />
+	    </div>
+
+	    
+	    
+	    <div class="overlay" id="personas_overlay"><tal:block metal:define-macro="editPersona">
+	      <header tal:content="persona/headline | default" class="persona_headline">Add pesona</header>
+	      
+	      <form action="#" method="post">
+		<select name="person" id="personaselect" class="personaselection" style="width:150px; height:100px;" onChange="$('select#personaselect').val(this.value);" >
+		    <option class="person1" value="p1">person1</option>
+		    <option class="person2" value="p2">person2</option>
+		    <option class="person3" value="p3">person3</option>
+		    <option class="person4" value="p4">person4</option>
+		    <option class="person5" value="p5">person5</option>
+		    <option class="person6" value="p6">person6</option>
+		</select>
+		<ul class="type">
+		  <li><textarea class="person_title" name="person[title]" tal:content="persona/title | default">Add Persona Title</textarea></li>
+		  <li><textarea class="person_description" name="person[description]" tal:content="persona/description | default">Add Persona Description</textarea></li>
+		</ul>
+		<input type="hidden" class="challenge_id" name="person[challenge_id]" value="" tal:attributes="value chall/id | default" />
+		<input class="person_id" type="hidden" name="person[id]" value="" tal:attributes="value persona/id | default" />
+		<input type="submit" value="save >" />
+	      </form></tal:block><tal:block metal:use-macro="editPersona" />
+	    </div>
+	    
+	    
+	    
+	    
+	    
+
+	    <div class="overlay" id="solution_overlay">
+		  <tal:block metal:define-macro="solutionOverlay">
+		  <header tal:content="solution/headline | default">Add solution</header>
+		  <form method="post" action="#">
+		    <a href="#" class="fileupload"><span>Image or File</span></a>
+		    <ul class="type">
+		      <li><textarea class="stitle" name="solution[title]" tal:content="solution/title | default">Add Solution Title</textarea></li>
+		      <li><textarea class="sdescription" name="solution[description]" tal:content="solution/description | default">Add Solution Description</textarea></li>
+		    </ul>
+		    <input type="hidden" name="solution[challenge_id]" value="" tal:attributes="value chall/id | null" />
+		    <input type="hidden" class="sid" name="solution[solution_id]" value="" tal:attributes="value solution/id | null" />
+		    <input type="submit" value="save >" />
+		  </form></tal:block><tal:block metal:use-macro="solutionOverlay" />
+	    </div>
+
+	    
+	    
+	    <div class="overlay" id="category_overlay"><tal:block metal:define-macro="AddEditContainer">
+		  <header tal:content="solution/headline | default">Add container</header>
+		  <form method="post" action="#">
+		    <a href="#" class="fileupload"><span>Image or File</span></a>
+		    <ul class="type">
+		      <li><textarea class="stitle" name="solutioncontainer[title]" tal:content="solution/title | default">Add Container Title</textarea></li>
+		      <li><textarea class="sinfo" name="solutioncontainer[info]" tal:content="solution/info | default">Add Container Description</textarea></li>
+		    </ul>
+		    <input type="hidden" class="ssid" name="solutioncontainer[solution_id]" value="" tal:attributes="value solution/id | null" />
+		    <input type="hidden" class="scid" name="solutioncontainer[container_id]" value="" tal:attributes="value solution/cid | null" />
+		    <input type="submit" value="save >" />
+		    <button class="remove solution_remove">delete x</button>
+		  </form></tal:block><tal:block  metal:use-macro="AddEditContainer" />
+	    </div>
+	    
+	    
+	    
+	    
+	    <div class="overlay" id="loading_overlay">
+		  <header tal:content="solution/headline | default">Loading</header>
+		  <img src="${baseUrl}public/img/loading.gif" style="margin:30px auto; display:block;"/>
+	    </div>
+	    
+	    <div class="overlay" id="archetypedetail_overlay">
+		<header class="archetypedetail_headline">Archetype Detail</header>
+		<ul class="type" style="float:right; width:100%;">
+		    <li><img src="" class="archetypeimg" /></li>
+		    <li><b>Module</b><p class="archdetail_module">Cargarage Lorem ipsum sit dolor amet ma morph be psy.</p></li>
+		    <li><b>Category</b><p class="archdetail_category">Automotiv</p></li>
+		    <li><b>Keywords</b><p class="archdetail_keywords">Automotiv, Automotiv, Automotiv, Automotiv, Automotiv</p></li>
+		    <li><b>Benefit</b><p class="archdetail_benefit">Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy.</p></li>
+		    <li><b>Functions</b><p class="archdetail_function">Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy. Cargarage Lorem ipsum sit dolor amet ma morph be psy.</p></li>
+		    <li><b>Complexity</b><p class="archdetail_complexity">1</p></li>
+		</ul>
+		<input type="submit" value="Close" onclick="$('#archetypedetail_overlay .close').trigger('click');"/>
+	    </div>
+	    
+	    
+
+	    <div class="overlay" id="archetype_types" style="bottom: 176.1px">
+	      <ul>
+		<li data-archetype-catid="showall">
+		  <p><b>RESET</b></p>
+		</li>  
+		<li tal:repeat="item challenge/getArcheTypeCats" data-archetype-catid="${item/id}">
+		  <img src="/${item/icon}" alt="/" />
+		  <p tal:content="item/title">Title</p>
+		</li>
+	      </ul>
+	    </div>
+
+	    <div class="overlay" id="container_overlay">
+	      <div class="contentWrap"></div>
+	    </div>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,20 @@
+<tal:block metal:define-macro="top-menu">
+
+    <ul>
+	<!--<li class="active"><strong>Dashboard</strong></li>-->
+	<li><a href="/">Dashboard</a></li>
+	<tal:block tal:condition="tpl/session:loggedIn">
+	    <li><a href="/user">User</a></li>
+	</tal:block>
+
+	<li><span style="width:100px; display:block;">&nbsp;</span></li>
+
+	<li tal:condition="not: tpl/session:loggedIn">
+	    <a href="/user/login" class="login_btn ym-edit">Login</a>
+	</li>
+	<li tal:condition="tpl/session:loggedIn">
+	    <a href="/user/logout" class="login_btn ym-edit">Logout</a>
+	</li>
+    </ul>
+    
+</tal:block>

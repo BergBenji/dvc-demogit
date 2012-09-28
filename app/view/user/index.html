@@ -1,0 +1,72 @@
+<tal:block metal:use-macro="main.html/page_2_column">
+
+
+    <tal:block metal:fill-slot="sidebar">
+	<h3>Add new User</h3>
+	<form method="post" action="${baseUrl}user/create" class="ym-form">
+	    <div class="ym-fbox-text">
+		<label>Name<sup class="ym-required">*</sup></label>
+		<input type="text" name="login" />
+	    </div>
+	    <div class="ym-fbox-text">
+		<label>Password<sup class="ym-required">*</sup></label>
+		<input type="text" name="password" />
+	    </div>
+	    <div class="ym-fbox-select">
+		<label>Role<sup class="ym-required">*</sup></label>
+		<select name="role">
+		    <option value="default">Default</option>
+		    <option value="admin">Admin</option>
+		    <option value="owner">Owner</option>
+		</select>
+	    </div>
+	    <div class="ym-fbox-button">
+		<button class="ym-button ym-add" type="submit">Speichern</button>
+	    </div>
+	</form>
+    </tal:block>    
+
+    <tal:block metal:fill-slot="content">
+	<h3>User List</h3>
+	<table>
+	    <tr>
+		<th>ID</th>
+		<th>Username</th>
+		<th>Role</th>
+		<th></th>
+	    </tr>
+	    <tr tal:repeat="item userlist">
+		<td tal:content="item/loginid | default">ID</td>
+		<td tal:content="item/login | default">Username</td>
+		<td tal:content="item/role | default">Role</td>
+		<td>
+		    <a tal:condition="exists: item/loginid" href="${baseUrl}user/edit/${item/loginid}">E</a> | 
+		    <a tal:condition="exists: item/loginid" href="${baseUrl}user/delete/${item/loginid}">X</a>
+		</td>
+	    </tr>
+	</table>
+
+
+
+	<div class="ym-grid linearize-level-2 box info">
+	    <div class="ym-g50 ym-gl">
+		<div class="ym-gbox-left ">
+		    <!-- content -->
+		    <h6>This is a nested column</h6>
+		    <p>Lorem ipsum dolor sit amet</p>
+		</div>
+	    </div>
+	    <div class="ym-g50 ym-gr">
+		<div class="ym-gbox-right">
+		    <!-- content -->
+		    <h6>This is another nested column </h6>
+		    <p>Lorem ipsum dolor sit amet</p><p>Lorem ipsum dolor sit amet</p><p>Lorem ipsum dolor sit amet</p><p>Lorem ipsum dolor sit amet</p>
+		</div>
+	    </div>
+	</div>
+
+
+
+    </tal:block>
+
+</tal:block>

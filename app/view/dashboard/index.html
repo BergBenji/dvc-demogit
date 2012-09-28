@@ -1,0 +1,41 @@
+<tal:block metal:use-macro="dvc.html/default_tpl">
+
+    <tal:block define="global pageid string:intro" />
+    
+    
+    
+    <tal:block metal:fill-slot="content">
+	    <header>
+	      <h1>Dentsu</h1>
+	      <h2>Value Creator</h2>
+	    </header>
+	    <section id="challenge_list">
+	      <header><span>Challenges</span></header>
+	      <article>
+		<ul>
+		    <li tal:repeat="item challenges" id="chal_${item/id}">
+			<a href="${baseUrl}challenge/show/${item/id}"><img src="_ui/img/placeholder_challenge.png" style="width:149px; height:104px;" tal:attributes="src item/img | string:_ui/img/placeholder_challenge.png"/></a>
+			<p tal:content="item/startTitle | string:KEIN TITLE" style="width:100%; display:block; overflow:hidden"></p>
+			<a href="#" class="removechallenge" data-challenge-id="${item/id}"></a>
+		    </li>
+		    <li>
+			<a href="#" class="add" rel="#challenge_overlay"></a>
+		    </li>
+		</ul>
+	      </article>
+	    </section>
+	    
+	    <div class="overlay" id="challenge_overlay">
+	      <header>Add new challenge</header>
+	      <form method="post" action="?">
+		<ul class="type">
+		  <li><textarea name="new_challenge[title]">Title</textarea></li>
+		  <li><textarea name="new_challenge[description]">Description</textarea></li>
+		</ul>
+		<input type="submit" value="save >" />
+	      </form>
+	    </div>
+    </tal:block>
+    
+
+</tal:block>

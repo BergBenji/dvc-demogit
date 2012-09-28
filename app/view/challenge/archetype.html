@@ -1,0 +1,57 @@
+<tal:block condition="not: archetypes">
+    <h1 style="color:#FFF">No Archetypes for this selection</h1>
+</tal:block>
+
+<tal:block condition="archetypes">
+    
+<tal:block tal:condition="displaytype" define="header archetype/getContainerHeadline">
+<header>
+      <span>Archetype</span>
+      <span>${header/title}</span>
+</header>
+    <p>Notes: ${header/info}</p>
+</tal:block>
+    
+<header tal:condition="not: displaytype">
+  <span>Archetype</span>
+  <span>${archetypes/0/title}</span>
+</header>
+<table>
+    <col style="width:15%"></col>
+    <col style="width:15%"></col>
+    <col style="width:25%"></col>
+    <col style="width:25%"></col>
+    <col style="width:7%"></col>
+    <col style=""></col>
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Modul</th>
+      <th>Functions / Technologies</th>
+      <th>Benefits</th>
+      <th>Keywords</th>
+      <th width="">Complexity</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="item archetypes">
+      <td class="archetype">
+        <img src="_ui/images/defaultimg.jpg" tal:attributes="src item/image | string:_ui/img/placeholder_archetype_small.png" alt="/" />
+        <img class="archetype_type" src="/${item/catimg | string:public/img/placeholder_archetype_type.png}" alt="/" />
+      </td>
+      <td class="modul">
+        <ul>
+          <li tal:content="item/title">iPad 1</li>
+        </ul>
+      </td>
+      <td tal:content="item/functext | string:No Function">FUNCTION TEXT</td>
+      <td tal:content="item/benefit | string:No Benefit">BENEFITS Text</td>
+      <td tal:content="item/keywords | string:No Keywords">Keywords of archetype</td>
+      <td tal:content="item/complexity | string:No Complexity">1</td>
+      <td tal:content="item/typename | string:No Type">Product</td>
+    </tr>
+  </tbody>
+</table>
+
+</tal:block>

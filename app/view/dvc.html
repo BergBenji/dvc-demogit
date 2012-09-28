@@ -1,0 +1,33 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:phptal="http://phptal.org/ns/phptal" metal:define-macro="default_tpl">
+  <head>
+
+    <meta charset="utf-8"/>
+    <!-- Mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" href="${baseUrl}apple-touch-icon.png" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!--    <link rel="stylesheet" href="${baseUrl}public/css/dvc.css" />-->
+    <tal:block metal:define-slot="head" />
+    <title>${pagetitle | string:Seitentitle}</title>
+  </head>
+  
+    <body id="${pageid | string:intro}" style="display:none;">
+    <tal:block metal:define-slot="content">
+	Content of Body
+    </tal:block>
+    
+    <!-- INCLUDE CSS Files -->
+    <tal:block repeat="item tpl/getCssFiles">
+	<link rel="stylesheet" href="${baseUrl}${item}" type="text/css" /></tal:block>
+    <!-- Include JS Files -->
+    <tal:block repeat="item tpl/getJsFiles">
+	<script type="text/javascript" src="${baseUrl}${item}"></script></tal:block>
+    
+    <tal:block metal:define-slot="dynamic_js" />
+    
+    </body>
+</html>
+

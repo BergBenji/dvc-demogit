@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:phptal="http://phptal.org/ns/phptal" metal:define-macro="page_tpl">
+    <head>
+
+	<meta charset="utf-8"/>
+	<!-- Mobile viewport optimisation -->
+	
+	<link rel="apple-touch-icon" href="${baseUrl}apple-touch-icon.png" />
+
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<link href="${baseUrl}public/css/flexible-grids.css" rel="stylesheet" type="text/css"/>
+	
+	<link rel="stylesheet" href="${baseUrl}public/css/ui-lightness/jquery-ui-1.8.22.custom.css" />
+	
+	<script type="text/javascript" src="${baseUrl}public/js/jquery-1.7.2.min.js"></script>
+	
+	<script type="text/javascript" src="${baseUrl}public/js/jquery-ui-1.8.22.custom.min.js"></script>
+	
+	<tal:block metal:define-slot="head">
+	</tal:block>
+
+	
+	
+	
+	
+	
+	<tal:block tal:condition="exists: jsfiles" tal:repeat="item jsfiles">
+	    <script type="text/javascript" src="${baseUrl}${item}"></script>
+	</tal:block>
+
+	<title>${pagetitle | string:Seitentitle}</title>
+
+    </head>
+    <body>
+	<ul class="ym-skiplinks">
+	    <li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
+	    <li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
+	</ul>
+
+	<header>
+	    <div class="ym-wrapper">
+		<div class="ym-wbox">
+		    <h1>${pageTitle | string: Seitentitel}</h1>
+		    <h4>${pageSlogan | string:}</h4>
+		</div>
+	    </div>
+	</header>
+
+	<nav id="nav">
+	    <div class="ym-wrapper">
+		<div class="ym-hlist">
+		    <tal:block metal:use-macro="menu.html/top-menu" />
+		    <form class="ym-searchform">
+			<input class="ym-searchfield" type="search" placeholder="Search..." /> <input class="ym-searchbutton" type="submit" value="Search" />
+		    </form>
+		</div>
+	    </div>
+	</nav>
+	<div id="main">
+	    <div class="ym-wrapper">
+		<div class="ym-wbox">
+		    <tal:block metal:define-slot="content">
+			<div class="ym-wrapper">
+			    <div class="ym-wbox">
+				<section class="box info">
+				    <div class="ym-grid linearize-level-1">
+					<div class="ym-g66 ym-gl">
+
+					    <div class="ym-grid linearize-level-2">
+						<article class="ym-g50 ym-gl">
+						    <div class="ym-gbox-left">
+							<h4>Here's a box</h4>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+							<a class="ym-button ym-next" href="#">Read More</a> </div>
+						</article>
+						<article class="ym-g50 ym-gr">
+						    <div class="ym-gbox">
+							<h4>And another box</h4>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+							<a class="ym-button ym-next" href="#">Read More</a> </div>
+						</article>
+					    </div>
+
+					</div>
+					<article class="ym-g33 ym-gr">
+					    <div class="ym-gbox-right secondary">
+						<h4>This box is aligned with the sidebar</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+					    </div>
+					</article>
+				    </div>
+				</section>
+
+				<section class="ym-grid linearize-level-1">
+				    <article class="ym-g66 ym-gl content">
+					<div class="ym-gbox-left ym-clearfix">
+					    <tal:block metal:define-slot="content">
+						Hier kommt der Main Content
+					    </tal:block>
+
+					    <div class="ym-grid linearize-level-2">
+						<div class="ym-g50 ym-gl">
+						    <div class="ym-gbox-left">
+							<!-- content -->
+							<h6>This is a nested column</h6>
+							<p>Lorem ipsum dolor sit amet</p>
+						    </div>
+						</div>
+						<div class="ym-g50 ym-gr">
+						    <div class="ym-gbox-right">
+							<!-- content -->
+							<h6>This is another nested column </h6>
+							<p>Lorem ipsum dolor sit amet</p>
+						    </div>
+						</div>
+					    </div>
+					</div>
+				    </article>
+				    <aside class="ym-g33 ym-gr">
+					<div class="ym-gbox-right ym-clearfix">
+
+					    <tal:block metal:define-slot="sidebar">
+						<h3>This is a default Content! </h3>
+						<p>Vestibulum ante ipsum primis in Vestibulum ante ipsum primis in</p>
+						<p>Vestibulum ante ipsum primis in Vestibulum ante ipsum primis in</p>
+					    </tal:block>
+
+					</div>
+				    </aside>
+				</section>
+			    </div>
+			</div>
+		    </tal:block>
+		</div>
+	    </div>
+	</div>
+	<footer>
+	    <div class="ym-wrapper">
+		<div class="ym-wbox">
+		    <p>© Company 2012 &ndash; Layout based on <a href="http://www.yaml.de">YAML</a></p>
+		</div>
+	    </div>
+	</footer>
+
+	<!-- full skip link functionality in webkit browsers -->
+	<script src="${baseUrl}public/yaml/core/js/yaml-focusfix.js"></script>
+    </body>
+</html>
+
+
+<tal:block metal:define-macro="page_1_column" metal:use-macro="page_tpl">
+    <tal:block metal:fill-slot="content">
+	
+	<tal:block metal:define-slot="top_layer">
+	    <!-- HERE COMES THE TOP_LAYER_CONTENT -->
+	</tal:block>
+	
+	<tal:block metal:define-slot="content">
+	    <section>Hier kommt der Main Content</section>
+	</tal:block>
+	
+    </tal:block>
+</tal:block>
+
+
+<tal:block metal:define-macro="page_2_column" metal:use-macro="page_tpl">
+    <tal:block metal:fill-slot="content">
+
+	<tal:block metal:define-slot="top_layer">
+	    <!-- HERE COMES THE TOP_LAYER_CONTENT -->
+	</tal:block>
+
+	<section class="ym-grid linearize-level-1 ym-equalize">
+	    <article class="ym-g66 ym-gl content">
+		<div class="ym-gbox-left ym-clearfix">
+		    <tal:block metal:define-slot="content">
+			Hier kommt der Main Content
+		    </tal:block>
+		</div>
+	    </article>
+	    <aside class="ym-g33 ym-gr sidebar">
+		<div class="ym-gbox-right ym-clearfix">
+
+		    <tal:block metal:define-slot="sidebar">
+			<h3>This is a default Content! </h3>
+			<p>Vestibulum ante ipsum primis in Vestibulum ante ipsum primis in</p>
+			<p>Vestibulum ante ipsum primis in Vestibulum ante ipsum primis in</p>
+		    </tal:block>
+		    
+		</div>
+	    </aside>
+	</section>
+	
+	
+	
+    </tal:block>
+</tal:block>
+

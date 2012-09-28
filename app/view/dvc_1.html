@@ -1,0 +1,64 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:phptal="http://phptal.org/ns/phptal" metal:define-macro="default_tpl">
+  <head>
+
+    <meta charset="utf-8"/>
+    <!-- Mobile viewport optimisation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" href="${baseUrl}apple-touch-icon.png" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!--    <link rel="stylesheet" href="${baseUrl}public/css/dvc.css" />-->
+    <tal:block metal:define-slot="head" />
+    <title>${pagetitle | string:Seitentitle}</title>
+  </head>
+  
+    <body id="${pageid | string:intro}" style="display:none;">
+    <tal:block metal:define-slot="content">
+	Content of Body
+    </tal:block>
+    
+    <!-- Javascript -->
+    <!--    
+    <script src="${baseUrl}public/js/jquery.min.js"></script>
+    <script src="${baseUrl}public/js/jScrollTouch.js"></script>
+    <script src="${baseUrl}public/js/overscroll/jquery.overscroll.min.js"></script>
+    <script src="${baseUrl}public/js/jquery.tools.min.js"></script>
+    <script src="${baseUrl}public/js/jquery.MetaData.js"></script>
+    <script src="${baseUrl}public/js/jquery.rating.min.js"></script>
+    <script src="${baseUrl}public/js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="${baseUrl}public/js/jquery.ui.selectmenu.js"></script>
+    <script src="${baseUrl}public/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="${baseUrl}public/js/jquery.dd.js"></script>
+    
+    <tal:block condition="not:tpl/isMobile">
+	<script type="text/javascript" src="${baseUrl}public/js/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="${baseUrl}public/js/plu/plupload.js"></script>
+	<script type="text/javascript" src="${baseUrl}public/js/plu/plupload.html5.js"></script>
+	<script type="text/javascript" src="${baseUrl}public/js/uploader.js"></script>	
+	<script src="${baseUrl}public/js/notmobile.js"></script>
+	<link rel="stylesheet" href="/public/css/notmobile.css" type="text/css" />
+    </tal:block>
+    
+    <tal:block condition="tpl/isMobile">
+        <script src="${baseUrl}public/js/mobile.js"></script>
+	<link rel="stylesheet" href="/public/css/mobile.css" type="text/css" />
+    </tal:block>    
+    <script src="${baseUrl}public/js/application.js"></script>
+    -->
+    
+    
+    
+    <!-- INCLUDE CSS Files -->
+    <tal:block repeat="item tpl/getCssFiles">
+	<link rel="stylesheet" href="${baseUrl}${item}" type="text/css" /></tal:block>
+    
+    <!-- Include JS Files -->
+    <tal:block repeat="item tpl/getJsFiles">
+	<script type="text/javascript" src="${baseUrl}${item}"></script></tal:block>
+    <tal:block metal:define-slot="dynamic_js" />
+    
+    </body>
+</html>
+
