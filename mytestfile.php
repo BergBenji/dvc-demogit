@@ -11,9 +11,11 @@
  *
  * @author BergBenji
  */
-class mytestfile {
+class mytestfile extends baseController {
 
     function __construct() {
+	
+	parent::__construct(true);
 	
     }
 
