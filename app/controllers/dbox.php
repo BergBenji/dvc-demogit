@@ -36,11 +36,11 @@ class dbox extends baseController {
 	$this->dropbox = $vendor->loadVendor('dropbox');
 	
 //	Sandbox
-//	$dropbox->setKey('zaxdnkhdhbtnbsc');
-//	$dropbox->setSecret('f6py45w2lfi8o20');
+//	$dropbox->setKey('');
+//	$dropbox->setSecret('');
 //	Dropbox
-	$this->dropbox->setKey('bctvoaxwcp4ozsa');
-	$this->dropbox->setSecret('u75hy39hhq8zjro');
+	$this->dropbox->setKey('');
+	$this->dropbox->setSecret('');
 	$this->dropbox->setCType('dropbox');
 	$this->dropbox->connect();
 	return $this->dropbox;
@@ -70,8 +70,8 @@ class dbox extends baseController {
     public function getFile() {
 	$this->connect();
 	
-	$target = PUBLICDIR.'downloads/rn.pdf';
-	$src = '/ANG_RN/Tonfeld_Atelier_24_11_2011_Angebot_Wordpress.pdf';
+	$target = PUBLICDIR.'downloads/';
+	$src = '';
 	$this->dropbox->getFile($src, $target);
 	
     }
