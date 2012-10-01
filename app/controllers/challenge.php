@@ -8,7 +8,7 @@ class challenge extends baseController {
 
     function __construct()
     {
-	parent::__construct();
+	parent::__construct(true);
     }
     
     public function index()
@@ -18,30 +18,18 @@ class challenge extends baseController {
     
     public function show($challengeid = NULL, $extend = NULL)
     {
-	$activeSolution = NULL;
-	
 	if($challengeid == NULL) header('Location: /');		// Wenn keine Challengeid vorhanden zurück zum Dashboard
+	
+	
+	$activeSolution = NULL;
 	
 	$challenge = $this->model->loadChallenge($challengeid);	// Challenge laden
 	
 	if(!$challenge) header('Location: /');		// Wenn keine Challengeid vorhanden zurück zum Dashboard
-	
-	// Solution Laden
-	if($extend !== NULL) {
-	    $activeSolution = $extend[0];
-	    $solution = $this->loadModel('solution')->loadSolutionObject($challengeid, $activeSolution);
-	    
-	    if($solution === false) $activeSolution = NULL;
-	}
-	
-	if($activeSolution == NULL) {
-	    // Get first solution if one exists!
-	    $activeSolution = NULL;
-	    $solution = $this->loadModel('solution')->loadSolutionObject($challengeid, NULL);
-	    
-	    if($solution !== false) $activeSolution = $solution->id;
-	} 
 
+	$solution = $this->loadModel('solution')->loadSolutionObject($challengeid, $extend);
+	if($solution !== false) $activeSolution = $solution->id;
+	
 	$this->view->challenge			= $challenge;	// Challenge Object an View übergeben
 	$this->view->persons			= $this->loadModel('person')->loadPersonas($challengeid);		// Personen Object an View übergeben
 	$this->view->allSolutions		= $this->loadModel('solution')->loadAllSolutions($challengeid, $activeSolution); // Alle solutions laden für drop down liste! und an View übergeben
