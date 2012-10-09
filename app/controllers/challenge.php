@@ -18,17 +18,14 @@ class challenge extends baseController {
     
     public function show($challengeid = NULL, $extend = NULL)
     {
-	if($challengeid == NULL) header('Location: /');		// Wenn keine Challengeid vorhanden zurück zum Dashboard
+	if($challengeid == NULL) header('Location: /');		// if no challenge id given - return to page index
 	
+	$challenge = $this->model->loadChallenge($challengeid);	// load challenge with challenge id
 	
-	$activeSolution = NULL;
-	
-	$challenge = $this->model->loadChallenge($challengeid);	// Challenge laden
-	
-	if(!$challenge) header('Location: /');		// Wenn keine Challengeid vorhanden zurück zum Dashboard
+	if(!$challenge) header('Location: /');			// If no challenge object exists - return to page index
 
 	$solution = $this->loadModel('solution')->loadSolutionObject($challengeid, $extend);
-	if($solution !== false) $activeSolution = $solution->id;
+	if($solution !== false) { $activeSolution = $solution->id; } else $activeSolution = NULL;
 	
 	$this->view->challenge			= $challenge;	// Challenge Object an View übergeben
 	$this->view->persons			= $this->loadModel('person')->loadPersonas($challengeid);		// Personen Object an View übergeben
@@ -49,10 +46,15 @@ class challenge extends baseController {
 	echo json_encode($data);
     }
     
+    
+    
     public function save()
     {
 	$data = $_POST['challenge'];
-	$this->model->saveChallenge($data);
+	$var = $this->model->saveChallenge($data);
+	if(!is_bool($var)) {
+	    header('Location: '.$var);
+	}
     }
     
     public function destroy($id)

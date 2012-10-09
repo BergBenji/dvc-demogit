@@ -66,6 +66,7 @@ class challenge_model extends model {
 	    //ADD
 	    unset($data['id']);
 	    $this->db->insert('sys_challenges', $data);
+	    return $this->db->lastInsertId();
 	}
     }
     
